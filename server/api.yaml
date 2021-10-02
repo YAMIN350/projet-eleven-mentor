@@ -1,0 +1,303 @@
+swagger: "2.0"
+info:
+  title: Breed API
+  description: This is my API Documentation
+  version: 1.0
+  contact:
+    email: gherbi.yamin.y@gmail.com
+paths:
+  /breeds:
+    get:
+      summary: Returns a list of breeds.
+      description: breed Who are already registered
+      responses:
+        200:
+          description: Successul Response
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: number
+                createdAt:
+                  type: string
+                name:
+                  type: string
+                  required: true
+                description:
+                  type: string
+                  required: true
+                image:
+                  type: string
+                  required: true
+                likes:
+                  type: number
+                comments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      createdAt:
+                        type: string
+                      pseudo:
+                        type: string
+                      message:
+                        type: string
+    post:
+      summary: add a new breed.
+      description:
+      responses:
+        201:
+          description: Successul Response
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                required: true
+              description:
+                type: string
+                required: true
+              image:
+                type: file
+                required: true
+  /breeds/randomly:
+    get:
+      summary: Returns a random race.
+      description:
+      responses:
+        200:
+          description: Successul Response
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+              createdAt:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              image:
+                type: string
+              likes:
+                type: number
+  /breeds/top:
+    get:
+      summary: Returns top breed for max comments by ID.
+      parameters:
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type : number
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: number
+                createdAt:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: string
+                likes:
+                  type: number
+  /breeds/{breedId}:
+    get:
+      summary: Returns a breed id
+      parameters:
+        - in: path
+          name: breedId
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+              createdAt:
+                type: string
+              name:
+                type: string
+                required: true
+              description:
+                type: string
+                required: true
+              image:
+                type: string
+                required: true
+              likes:
+                type: number
+              comments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    createdAt:
+                      type: string
+                    pseudo:
+                      type: string
+                    message:
+                      type: string
+    delete:
+      summary: delete breed
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          text/plain:
+            schema:
+              breedId:
+                type: number
+      responses:
+        200:
+          description: Successul Response
+  /breeds/likes:
+    post:
+      summary: add likes in breed
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                breedId:
+                  type: number
+      responses:
+        200:
+          description: Successul Response
+  /comments:
+    get:
+      summary: Returns a list of comments.
+      description: comments Who are already registered
+      responses:
+        200:
+          description: Successul Response
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: number
+                createdAt:
+                  type: string
+                name:
+                  type: string
+                  required: true
+                description:
+                  type: string
+                  required: true
+                image:
+                  type: string
+                  required: true
+                likes:
+                  type: number
+                comments:
+                  type: array
+    post:
+      summary: add a new comments
+      description:
+      parameters:
+        - name: pseudo
+            required: true
+            type: string
+        - name: message
+            required: true
+            type: string
+        - name: breedId
+            required: true
+            type: number
+      responses:
+        201:
+          description: Successul Response
+  /comments/{commentId}:
+    get:
+      summary: Returns a comment.
+      description: breed Who are already registered
+      responses:
+        200:
+          description: Successul Response
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                pseudo:
+                  type: string
+                  required: true
+                message:
+                  type: string
+                  required: true
+                breedId:
+                  type: number
+                  required: true
+    delete:
+      summary: delete comment
+      requestBody:
+        description:
+        required: true
+        content:
+          text/plain:
+            schema:
+              commentId:
+                type: number
+      responses:
+        200:
+          description: Successul Response
+  /breeds/{breedId}/comments:
+    get:
+      summary: return the list of comments of a breed
+      description:
+      responses:
+        200:
+          description: Successul Response
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: number
+                createdAt:
+                  type: string
+                pseudo:
+                  type: string
+                message:
+                  type: string
+                breed:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      createdAt:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      image:
+                        type: string
+                      likes:
+                        type: number

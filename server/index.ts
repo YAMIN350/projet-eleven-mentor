@@ -4,7 +4,9 @@ import * as dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import "reflect-metadata";
-import { createConnection } from "typeorm";
+import swaggerUi from "swagger-ui-express";
+import {createConnection} from "typeorm";
+import YAML from "yamljs";
 import {router} from "./src/router/router";
 
 /**
@@ -13,12 +15,15 @@ import {router} from "./src/router/router";
 dotenv.config();
 
 createConnection().then(async (connection) => {
+    const swaggerJsDoc = YAML.load("./api.yaml");
     const app = express();
     await connection.synchronize();
     await connection.runMigrations();
     app.use(helmet());
     app.use(express.json());
     app.use("/api", router);
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
+
     app.use((req, res, next) => {
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader(
